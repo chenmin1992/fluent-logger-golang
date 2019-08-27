@@ -236,12 +236,7 @@ func (chunk *MessageChunk) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	option, err := json.Marshal(chunk.message.Option)
-	if err != nil {
-		return nil, err
-	}
-	return []byte(fmt.Sprintf("[\"%s\",%d,%s,%s]", chunk.message.Tag,
-		chunk.message.Time, data, option)), err
+	return data, nil
 }
 
 // getUniqueID returns a base64 encoded unique ID that can be used for chunk/ack
@@ -287,6 +282,7 @@ func (f *Fluent) EncodeData(tag string, tm time.Time, message interface{}) (msg 
 		m := &Message{Tag: tag, Time: timeUnix, Record: message, Option: option}
 		msg.data, err = m.MarshalMsg(nil)
 	}
+	msg.data = append(msg.data, byte('\n'))
 	return
 }
 
