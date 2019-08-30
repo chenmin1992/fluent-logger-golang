@@ -78,3 +78,7 @@ of the connection. The default is false.
 ```
 go test
 ```
+## Difference from origin repo
+1. Append a newline byte at the end of every packet(compatible for td-agent)
+2. Send record only(without tag time option)
+3. UDP support and as default connection
