@@ -21,7 +21,7 @@ import (
 
 const (
 	defaultHost                   = "127.0.0.1"
-	defaultNetwork                = "tcp"
+	defaultNetwork                = "udp"
 	defaultSocketPath             = ""
 	defaultPort                   = 24224
 	defaultTimeout                = 3 * time.Second
@@ -321,6 +321,8 @@ func (f *Fluent) connect() (err error) {
 
 	switch f.Config.FluentNetwork {
 	case "tcp":
+		f.conn, err = net.DialTimeout(f.Config.FluentNetwork, f.Config.FluentHost+":"+strconv.Itoa(f.Config.FluentPort), f.Config.Timeout)
+	case "udp":
 		f.conn, err = net.DialTimeout(f.Config.FluentNetwork, f.Config.FluentHost+":"+strconv.Itoa(f.Config.FluentPort), f.Config.Timeout)
 	case "unix":
 		f.conn, err = net.DialTimeout(f.Config.FluentNetwork, f.Config.FluentSocketPath, f.Config.Timeout)
